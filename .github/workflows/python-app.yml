@@ -1,0 +1,35 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Fny
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 1/4 * * *
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        pip install requests
+    - name: Run
+      run: |
+        token="${{ secrets.TOKEN }}"
+        fny_url="${{ secrets.FNY_RUL }}"
+        clash_url1="${{ secrets.CLASH_URL1 }}"
+        clash_url2="${{ secrets.CLASH_URL2 }}"
+        python3 ./main.py <<EOF
+        ${token}
+        ${fny_url}
+        ${clash_url1}
+        ${clash_url2}
+        EOF
