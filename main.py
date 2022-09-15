@@ -16,7 +16,7 @@ def get_gitee_file_sha(url):
         "accept": "application/json",
         "charset": "UTF-8",
     }
-    response = requests.get(url, headers=headers).json()
+    response = requests.get(url, headers=headers, timeout=20).json()
     if response.get("sha"):
         return response["sha"]
 
@@ -33,7 +33,7 @@ def update_gitee_file(token, url, string):
         "message": time.asctime(),
         "sha": get_gitee_file_sha(url)
     }
-    resp = requests.put(url=url, headers=headers, json=data)
+    resp = requests.put(url=url, headers=headers, json=data, timeout=20)
     if resp.status_code == 200:
         print(f"{ url } updated.")
     else:
@@ -54,14 +54,14 @@ def get_subscribe_content(fny_url):
         "email_code": "",
     }
     # 注册
-    resp = session.post(f"{fny_url}api/v1/passport/auth/register", data=data, timeout=10)
+    resp = session.post(f"{fny_url}api/v1/passport/auth/register", data=data, timeout=20)
     print(resp.text)
     # 获取订阅链接
-    resp = session.get(f"{fny_url}api/v1/user/getSubscribe")
+    resp = session.get(f"{fny_url}api/v1/user/getSubscribe", timeout=20)
     print(resp.json())
     subscribe_url = resp.json()["data"]["subscribe_url"]
     print("sub url:", subscribe_url)
-    resp = session.get(subscribe_url)
+    resp = session.get(subscribe_url, timeout=20)
     # resp = requests.get(subscribe_url, headers={"User-Agent": "Clash"})
     return resp.text
 
