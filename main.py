@@ -16,10 +16,8 @@ def get_gitee_file_sha(url):
         "accept": "application/json",
         "charset": "UTF-8",
     }
-    response = requests.get(url, headers=headers, timeout=20)
-    print(response.text)
-    print(response.headers)
-    if response.json().get("sha"):
+    response = requests.get(url, headers=headers, timeout=20).json()
+    if response.get("sha"):
         return response["sha"]
 
 
