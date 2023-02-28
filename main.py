@@ -57,9 +57,10 @@ def get_subscribe_content(fny_url):
     resp = session.post(f"{fny_url}api/v1/passport/auth/register", data=data, timeout=20)
     print(resp.text)
     # 获取订阅链接
-    resp = session.get(f"{fny_url}api/v1/user/getSubscribe", timeout=20)
-    print(resp.json())
-    subscribe_url = resp.json()["data"]["subscribe_url"]
+    # resp = session.get(f"{fny_url}api/v1/user/getSubscribe", timeout=20)
+    # print(resp.json())
+    # subscribe_url = resp.json()["data"]["subscribe_url"]
+    subscribe_url = fny_url + "api/v1/client/subscribe?token=" + resp.json()["data"]["token"]
     print("sub url:", subscribe_url)
     resp = session.get(subscribe_url, timeout=20)
     # resp = requests.get(subscribe_url, headers={"User-Agent": "Clash"})
