@@ -76,13 +76,13 @@ def main():
     _token = input()
     _fny_url = input()
     _clash_url1 = input()
-    _clash_url2 = input()
+    # _clash_url2 = input()
 
     content1 = get_subscribe_content(_fny_url)
     update_gitee_file(_token, _clash_url1, content1)
 
-    content2 = get_subscribe_content(_fny_url)
-    update_gitee_file(_token, _clash_url2, content2)
+    # content2 = get_subscribe_content(_fny_url)
+    # update_gitee_file(_token, _clash_url2, content2)
 
     print("End", time.asctime())
 
