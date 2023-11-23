@@ -1,8 +1,15 @@
 import base64
+import random
 import requests
+import string
 import time
 
 from requests import Session
+
+
+def generate_random_letters(length):
+    letters = string.ascii_letters
+    return ''.join(random.choice(letters) for _ in range(length))
 
 
 def get_gitee_file_sha(url):
@@ -46,7 +53,7 @@ def get_subscribe_content(fny_url):
                                     "(KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36"
     # 先获取cookie
     session.get(fny_url)
-    username = get_username()
+    username = generate_random_letters(8)
     data = {
         "email": f"{username}@gmail.com",
         "password": f"{username}",
@@ -61,29 +68,19 @@ def get_subscribe_content(fny_url):
     # print(resp.json())
     # subscribe_url = resp.json()["data"]["subscribe_url"]
     subscribe_url = fny_url + "api/v1/client/subscribe?token=" + resp.json()["data"]["token"]
-    print("sub url:", subscribe_url)
+    # print("sub url:", subscribe_url)
     resp = session.get(subscribe_url, timeout=20)
     # resp = requests.get(subscribe_url, headers={"User-Agent": "Clash"})
     return resp.text
-
-
-def get_username():
-    ts = str(int(time.time()))
-    name = ts[:-3] + "Robot" + ts[-3:]
-    return name
 
 
 def main():
     _token = input()
     _fny_url = input()
     _clash_url1 = input()
-    # _clash_url2 = input()
 
     content1 = get_subscribe_content(_fny_url)
     update_gitee_file(_token, _clash_url1, content1)
-
-    # content2 = get_subscribe_content(_fny_url)
-    # update_gitee_file(_token, _clash_url2, content2)
 
     print("End", time.asctime())
 
